@@ -18,3 +18,4 @@ export class Sector {
   @Column({ type: 'enum', enum: EstadoEnum, default: EstadoEnum.ACTIVO })
   estado: EstadoEnum;
 }
+// Sectores validados contra seed de datos San Miguel
