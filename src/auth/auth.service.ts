@@ -48,3 +48,4 @@ export class AuthService {
     return this.usuarioRepo.findOne({ where: { id_usuario } });
   }
 }
+// Autenticacion JWT completada con guards
