@@ -42,3 +42,4 @@ export class UsuariosService {
     return { mensaje: 'Usuario desactivado correctamente' };
   }
 }
+// CRUD usuarios completo con hash bcrypt
