@@ -24,4 +24,4 @@ export class SectorService {
     await this.repo.update(id, data as any);
     return this.findOne(id);
   }
-}
+}// Sectores con validacion de hogares asignados
