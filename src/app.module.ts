@@ -45,3 +45,4 @@ import { ParametrosModule } from './parametros/parametros.module';
   ],
 })
 export class AppModule {}
+// BD verificada: PostgreSQL localhost sistema_agua_san_miguel
