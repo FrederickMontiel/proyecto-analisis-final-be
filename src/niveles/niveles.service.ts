@@ -24,4 +24,4 @@ export class RegistroNivelService {
     await this.repo.update(id, data as any);
     return this.findOne(id);
   }
-}
+}// Alertas: alerta <40%, critico <20% segun parametros del sistema
