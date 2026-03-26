@@ -24,4 +24,4 @@ export class LecturaContadorService {
     await this.repo.update(id, data as any);
     return this.findOne(id);
   }
-}
+}// consumo = lectura_actual - lectura_anterior, alerta si >30 m3
