@@ -24,4 +24,4 @@ export class ParametrosSistemaService {
     await this.repo.update(id, data as any);
     return this.findOne(id);
   }
-}
+}// Parametros: capacidad_tanque, umbrales, dias_gracia, consumo_promedio
