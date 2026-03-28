@@ -21,3 +21,4 @@ export class AuthController {
     return this.authService.perfil(req.user.id_usuario);
   }
 }
+// Endpoint perfil verificado en pruebas sprint 1
