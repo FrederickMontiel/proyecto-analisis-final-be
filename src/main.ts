@@ -33,3 +33,4 @@ async function bootstrap() {
 }
 
 bootstrap();
+// CORS configurado para Flutter web y movil
