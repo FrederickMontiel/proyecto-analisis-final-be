@@ -24,4 +24,4 @@ export class PagoService {
     await this.repo.update(id, data as any);
     return this.findOne(id);
   }
-}
+}// Pagos manuales: efectivo, transferencia, deposito - comprobantes correlativos
