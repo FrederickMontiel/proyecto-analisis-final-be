@@ -24,4 +24,4 @@ export class GastoService {
     await this.repo.update(id, data as any);
     return this.findOne(id);
   }
-}
+}// Gastos por categoria: Mantenimiento, Reparacion, Energia, Otro
