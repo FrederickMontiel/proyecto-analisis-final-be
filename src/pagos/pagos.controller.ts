@@ -14,4 +14,4 @@ export class PagoController {
   @Get(':id') findOne(@Param('id') id: string) { return this.service.findOne(+id); }
   @Post() create(@Body() data: any) { return this.service.create(data); }
   @Put(':id') update(@Param('id') id: string, @Body() data: any) { return this.service.update(+id, data); }
-}
+}// Endpoint estado de cuenta: saldo pendiente, historial, estado moroso
