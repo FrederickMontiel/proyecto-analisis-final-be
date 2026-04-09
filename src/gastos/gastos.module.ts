@@ -10,4 +10,4 @@ import { Gasto } from '../entities/gasto.entity';
   providers: [GastoService],
   exports: [GastoService],
 })
-export class GastoModule {}
+export class GastoModule {}// Pantalla estado de cuenta flutter integrada con API
