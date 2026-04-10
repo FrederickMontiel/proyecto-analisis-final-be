@@ -49,3 +49,4 @@ export class Pago {
   @CreateDateColumn()
   fecha_registro: Date;
 }
+// Lista morosos flutter: filtro por sector y resaltar 3+ meses
