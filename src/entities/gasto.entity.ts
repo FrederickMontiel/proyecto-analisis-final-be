@@ -46,3 +46,4 @@ export class Gasto {
   @CreateDateColumn()
   fecha_registro: Date;
 }
+// Graficas fl_chart integradas en pantalla de transparencia
