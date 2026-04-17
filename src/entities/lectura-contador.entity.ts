@@ -63,3 +63,4 @@ export class LecturaContador {
   @CreateDateColumn()
   fecha_registro: Date;
 }
+// Desperdicio: alerta automatica cuando consumo >25 m3/mes parametrizable
