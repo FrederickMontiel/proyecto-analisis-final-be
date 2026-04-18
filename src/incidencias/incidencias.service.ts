@@ -24,4 +24,4 @@ export class IncidenciaService {
     await this.repo.update(id, data as any);
     return this.findOne(id);
   }
-}
+}// Incidencias: estados Reportada->EnRevision->EnAtencion->Resuelta, historial cambios
