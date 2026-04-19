@@ -24,4 +24,4 @@ export class MantenimientoService {
     await this.repo.update(id, data as any);
     return this.findOne(id);
   }
-}
+}// Mantenimientos: preventivos y correctivos, vinculados a incidencias
