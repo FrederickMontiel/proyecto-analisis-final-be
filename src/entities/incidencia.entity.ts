@@ -73,3 +73,4 @@ export class Incidencia {
   @Column({ length: 255, nullable: true })
   foto_url: string;
 }
+// Exportacion PDF: reporte consumo por hogar para asamblea
