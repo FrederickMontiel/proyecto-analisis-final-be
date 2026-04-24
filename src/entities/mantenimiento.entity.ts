@@ -41,3 +41,4 @@ export class Mantenimiento {
   @Column({ type: 'text', nullable: true })
   observaciones: string;
 }
+// Correccion calculo consumo per capita y comparacion historica
