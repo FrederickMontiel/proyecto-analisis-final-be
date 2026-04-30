@@ -24,4 +24,4 @@ export class NotificacionService {
     await this.repo.update(id, data as any);
     return this.findOne(id);
   }
-}
+}// Notificaciones masivas: todos, por sector, por rol, tipos Urgente/Info
