@@ -24,4 +24,4 @@ export class AnuncioService {
     await this.repo.update(id, data as any);
     return this.findOne(id);
   }
-}
+}// Anuncios: vigencia configurable, archivado automatico al vencer
