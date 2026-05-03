@@ -24,4 +24,4 @@ export class LogAuditoriaService {
     await this.repo.update(id, data as any);
     return this.findOne(id);
   }
-}
+}// Log inmutable: usuario, accion, tabla, valor_anterior, valor_nuevo, ip
