@@ -41,3 +41,4 @@ export class Notificacion {
   @Column({ nullable: true })
   id_referencia: number;
 }
+// Dashboard habitante flutter: nivel agua, cuenta, reportar, anuncios
