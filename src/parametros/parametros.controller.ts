@@ -14,4 +14,4 @@ export class ParametrosSistemaController {
   @Get(':id') findOne(@Param('id') id: string) { return this.service.findOne(+id); }
   @Post() create(@Body() data: any) { return this.service.create(data); }
   @Put(':id') update(@Param('id') id: string, @Body() data: any) { return this.service.update(+id, data); }
-}
+}// Pantalla parametrizacion flutter: grupos por categoria con validacion tipo dato
