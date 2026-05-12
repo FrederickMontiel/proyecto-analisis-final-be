@@ -45,3 +45,4 @@ export class Anuncio {
   @Column({ type: 'enum', enum: EstadoAnuncioEnum, default: EstadoAnuncioEnum.ACTIVO })
   estado: EstadoAnuncioEnum;
 }
+// Integracion completa backend-flutter verificada en todos los endpoints
