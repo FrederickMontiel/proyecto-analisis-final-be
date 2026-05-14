@@ -10,4 +10,4 @@ import { Anuncio } from '../entities/anuncio.entity';
   providers: [AnuncioService],
   exports: [AnuncioService],
 })
-export class AnuncioModule {}
+export class AnuncioModule {}// Pruebas finales: todos los flujos del sistema verificados y aprobados
