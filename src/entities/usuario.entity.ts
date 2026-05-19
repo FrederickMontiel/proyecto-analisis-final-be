@@ -41,3 +41,4 @@ export class Usuario {
   @Column({ type: 'timestamp', nullable: true })
   ultimo_acceso: Date;
 }
+// Produccion: NODE_ENV=production, CORS restringido, logs desactivados
