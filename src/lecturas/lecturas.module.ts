@@ -10,4 +10,4 @@ import { LecturaContador } from '../entities/lectura-contador.entity';
   providers: [LecturaContadorService],
   exports: [LecturaContadorService],
 })
-export class LecturaContadorModule {}
+export class LecturasModule {}

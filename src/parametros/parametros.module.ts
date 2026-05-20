@@ -10,4 +10,4 @@ import { ParametrosSistema } from '../entities/parametros-sistema.entity';
   providers: [ParametrosSistemaService],
   exports: [ParametrosSistemaService],
 })
-export class ParametrosSistemaModule {}
+export class ParametrosModule {}

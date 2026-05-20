@@ -10,4 +10,4 @@ import { LogAuditoria } from '../entities/log-auditoria.entity';
   providers: [LogAuditoriaService],
   exports: [LogAuditoriaService],
 })
-export class LogAuditoriaModule {}
+export class AuditoriaModule {}

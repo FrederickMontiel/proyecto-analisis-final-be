@@ -10,4 +10,4 @@ import { Pago } from '../entities/pago.entity';
   providers: [PagoService],
   exports: [PagoService],
 })
-export class PagoModule {}// Pantalla registro pago flutter verificada con endpoints
+export class PagosModule {}// Pantalla registro pago flutter verificada con endpoints

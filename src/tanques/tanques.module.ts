@@ -10,4 +10,4 @@ import { Tanque } from '../entities/tanque.entity';
   providers: [TanqueService],
   exports: [TanqueService],
 })
-export class TanqueModule {}
+export class TanquesModule {}

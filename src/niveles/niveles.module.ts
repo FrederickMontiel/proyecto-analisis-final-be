@@ -10,4 +10,4 @@ import { RegistroNivel } from '../entities/registro-nivel.entity';
   providers: [RegistroNivelService],
   exports: [RegistroNivelService],
 })
-export class RegistroNivelModule {}
+export class NivelesModule {}

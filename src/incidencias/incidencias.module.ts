@@ -10,4 +10,4 @@ import { Incidencia } from '../entities/incidencia.entity';
   providers: [IncidenciaService],
   exports: [IncidenciaService],
 })
-export class IncidenciaModule {}// Gestion sectores flutter: CRUD sectores y asignacion hogares
+export class IncidenciasModule {}// Gestion sectores flutter: CRUD sectores y asignacion hogares
