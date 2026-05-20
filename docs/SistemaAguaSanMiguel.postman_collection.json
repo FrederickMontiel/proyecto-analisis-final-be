@@ -1,0 +1,894 @@
+{
+  "info": {
+    "name": "Sistema Agua San Miguel — API v1.0.0",
+    "_postman_id": "agua-san-miguel-2026",
+    "description": "Colección completa de endpoints para el Sistema de Gestión y Control del Agua - Comunidad San Miguel. Ejecutar primero '01 - Login' para obtener el token JWT.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000/api", "type": "string" },
+    { "key": "token", "value": "", "type": "string" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "🔐 Autenticación",
+      "item": [
+        {
+          "name": "01 - Login (obtener token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    const json = pm.response.json();",
+                  "    pm.collectionVariables.set('token', json.access_token);",
+                  "    pm.test('Token guardado correctamente', () => pm.expect(json.access_token).to.be.a('string'));",
+                  "    pm.test('Usuario retornado', () => pm.expect(json.usuario).to.have.property('rol'));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"presidente@sanmiguel.gt\",\n  \"contrasena\": \"Agua2026!\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "02 - Obtener perfil propio",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Tiene id_usuario', () => pm.expect(pm.response.json()).to.have.property('id_usuario'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/auth/perfil", "host": ["{{base_url}}"], "path": ["auth", "perfil"] }
+          }
+        },
+        {
+          "name": "03 - Login como Tesorero",
+          "request": {
+            "method": "POST",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"tesorero@sanmiguel.gt\",\n  \"contrasena\": \"Agua2026!\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "04 - Login como Operador",
+          "request": {
+            "method": "POST",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"operador@sanmiguel.gt\",\n  \"contrasena\": \"Agua2026!\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "05 - Sin token (debe fallar 401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Rechaza sin token', () => pm.response.to.have.status(401));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": { "raw": "{{base_url}}/usuarios", "host": ["{{base_url}}"], "path": ["usuarios"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 Usuarios",
+      "item": [
+        {
+          "name": "Listar todos los usuarios",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Es un array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/usuarios", "host": ["{{base_url}}"], "path": ["usuarios"] }
+          }
+        },
+        {
+          "name": "Obtener usuario por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/usuarios/1", "host": ["{{base_url}}"], "path": ["usuarios", "1"] }
+          }
+        },
+        {
+          "name": "Crear nuevo usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Tiene id_usuario', () => pm.expect(pm.response.json()).to.have.property('id_usuario'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan Pérez\",\n  \"correo\": \"juan.perez@sanmiguel.gt\",\n  \"telefono\": \"5512-3456\",\n  \"contrasena\": \"Agua2026!\",\n  \"rol\": \"Habitante\",\n  \"estado\": \"Activo\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/usuarios", "host": ["{{base_url}}"], "path": ["usuarios"] }
+          }
+        },
+        {
+          "name": "Actualizar usuario",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"telefono\": \"5599-8877\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/usuarios/1", "host": ["{{base_url}}"], "path": ["usuarios", "1"] }
+          }
+        },
+        {
+          "name": "Desactivar usuario",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "{{base_url}}/usuarios/1/desactivar", "host": ["{{base_url}}"], "path": ["usuarios", "1", "desactivar"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🗺️ Sectores",
+      "item": [
+        {
+          "name": "Listar sectores",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Es array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/sectores", "host": ["{{base_url}}"], "path": ["sectores"] }
+          }
+        },
+        {
+          "name": "Obtener sector por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/sectores/1", "host": ["{{base_url}}"], "path": ["sectores", "1"] }
+          }
+        },
+        {
+          "name": "Crear sector",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre_sector\": \"Sector Norte\",\n  \"descripcion\": \"Zona norte de la comunidad\",\n  \"numero_hogares\": 25,\n  \"estado\": \"Activo\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/sectores", "host": ["{{base_url}}"], "path": ["sectores"] }
+          }
+        },
+        {
+          "name": "Actualizar sector",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_hogares\": 28\n}"
+            },
+            "url": { "raw": "{{base_url}}/sectores/1", "host": ["{{base_url}}"], "path": ["sectores", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🛢️ Tanques",
+      "item": [
+        {
+          "name": "Listar tanques",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/tanques", "host": ["{{base_url}}"], "path": ["tanques"] }
+          }
+        },
+        {
+          "name": "Obtener tanque por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/tanques/1", "host": ["{{base_url}}"], "path": ["tanques", "1"] }
+          }
+        },
+        {
+          "name": "Crear tanque",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre_tanque\": \"Tanque Principal\",\n  \"capacidad_litros\": 20000,\n  \"ubicacion\": \"Cerro Norte, comunidad San Miguel\",\n  \"tipo\": \"Concreto\",\n  \"estado\": \"Activo\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/tanques", "host": ["{{base_url}}"], "path": ["tanques"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "💧 Niveles de Agua",
+      "item": [
+        {
+          "name": "Listar registros de nivel",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test('Es array', () => pm.expect(json).to.be.an('array'));",
+                  "if (json.length > 0) {",
+                  "  pm.test('Tiene nivel_porcentaje', () => pm.expect(json[0]).to.have.property('nivel_porcentaje'));",
+                  "  pm.test('Tiene nivel_litros', () => pm.expect(json[0]).to.have.property('nivel_litros'));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/niveles", "host": ["{{base_url}}"], "path": ["niveles"] }
+          }
+        },
+        {
+          "name": "Registrar nivel de agua",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Nivel guardado', () => pm.expect(pm.response.json()).to.have.property('id_registro'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_tanque\": 1,\n  \"nivel_porcentaje\": 65,\n  \"nivel_litros\": 13000,\n  \"observaciones\": \"Nivel estable, sin novedades\",\n  \"id_usuario\": 1,\n  \"estado\": \"Normal\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/niveles", "host": ["{{base_url}}"], "path": ["niveles"] }
+          }
+        },
+        {
+          "name": "Registrar nivel crítico (<20%)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_tanque\": 1,\n  \"nivel_porcentaje\": 15,\n  \"nivel_litros\": 3000,\n  \"observaciones\": \"Nivel crítico, se notifica al Presidente\",\n  \"id_usuario\": 1,\n  \"estado\": \"Crítico\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/niveles", "host": ["{{base_url}}"], "path": ["niveles"] }
+          }
+        },
+        {
+          "name": "Obtener nivel por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/niveles/1", "host": ["{{base_url}}"], "path": ["niveles", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📊 Lecturas de Contadores",
+      "item": [
+        {
+          "name": "Listar lecturas",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/lecturas", "host": ["{{base_url}}"], "path": ["lecturas"] }
+          }
+        },
+        {
+          "name": "Registrar lectura de contador",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Tiene consumo_calculado', () => pm.expect(pm.response.json()).to.have.property('consumo_calculado'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_hogar\": 1,\n  \"lectura_anterior\": 150.00,\n  \"lectura_actual\": 168.50,\n  \"consumo_calculado\": 18.50,\n  \"fecha_lectura\": \"2026-05-19T10:00:00.000Z\",\n  \"estado_contador\": \"Normal\",\n  \"origen_lectura\": \"Manual\",\n  \"unidad_medida\": \"Metros Cúbicos\",\n  \"id_usuario_lector\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/lecturas", "host": ["{{base_url}}"], "path": ["lecturas"] }
+          }
+        },
+        {
+          "name": "Lectura con consumo alto (posible fuga)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_hogar\": 2,\n  \"lectura_anterior\": 200.00,\n  \"lectura_actual\": 240.00,\n  \"consumo_calculado\": 40.00,\n  \"fecha_lectura\": \"2026-05-19T10:30:00.000Z\",\n  \"estado_contador\": \"Normal\",\n  \"observaciones\": \"Consumo anormalmente alto — verificar fugas\",\n  \"origen_lectura\": \"Manual\",\n  \"unidad_medida\": \"Metros Cúbicos\",\n  \"id_usuario_lector\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/lecturas", "host": ["{{base_url}}"], "path": ["lecturas"] }
+          }
+        },
+        {
+          "name": "Obtener lectura por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/lecturas/1", "host": ["{{base_url}}"], "path": ["lecturas", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "💰 Pagos",
+      "item": [
+        {
+          "name": "Listar todos los pagos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Es array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/pagos", "host": ["{{base_url}}"], "path": ["pagos"] }
+          }
+        },
+        {
+          "name": "Registrar pago en efectivo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Tiene numero_recibo', () => pm.expect(pm.response.json()).to.have.property('numero_recibo'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_hogar\": 1,\n  \"monto\": 30.00,\n  \"metodo_pago\": \"Efectivo\",\n  \"periodo_aplicado\": \"2026-05\",\n  \"numero_recibo\": \"PAGO-2026-001234\",\n  \"fecha_pago\": \"2026-05-19\",\n  \"id_usuario_registro\": 1,\n  \"observaciones\": \"\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/pagos", "host": ["{{base_url}}"], "path": ["pagos"] }
+          }
+        },
+        {
+          "name": "Registrar pago por transferencia",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_hogar\": 2,\n  \"monto\": 60.00,\n  \"metodo_pago\": \"Transferencia\",\n  \"periodo_aplicado\": \"2026-05\",\n  \"numero_recibo\": \"PAGO-2026-001235\",\n  \"fecha_pago\": \"2026-05-19\",\n  \"id_usuario_registro\": 1,\n  \"observaciones\": \"Pago doble por mes anterior\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/pagos", "host": ["{{base_url}}"], "path": ["pagos"] }
+          }
+        },
+        {
+          "name": "Obtener pago por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/pagos/1", "host": ["{{base_url}}"], "path": ["pagos", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🧾 Gastos",
+      "item": [
+        {
+          "name": "Listar gastos",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/gastos", "host": ["{{base_url}}"], "path": ["gastos"] }
+          }
+        },
+        {
+          "name": "Registrar gasto de mantenimiento",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descripcion\": \"Compra de cloro para tratamiento de agua\",\n  \"monto\": 85.00,\n  \"fecha_gasto\": \"2026-05-15\",\n  \"categoria\": \"Mantenimiento\",\n  \"id_usuario_registro\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/gastos", "host": ["{{base_url}}"], "path": ["gastos"] }
+          }
+        },
+        {
+          "name": "Registrar gasto de energía",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descripcion\": \"Factura de energía eléctrica mayo\",\n  \"monto\": 650.00,\n  \"fecha_gasto\": \"2026-05-10\",\n  \"categoria\": \"Energía\",\n  \"id_usuario_registro\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/gastos", "host": ["{{base_url}}"], "path": ["gastos"] }
+          }
+        },
+        {
+          "name": "Obtener gasto por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/gastos/1", "host": ["{{base_url}}"], "path": ["gastos", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "⚠️ Incidencias",
+      "item": [
+        {
+          "name": "Listar incidencias",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Es array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/incidencias", "host": ["{{base_url}}"], "path": ["incidencias"] }
+          }
+        },
+        {
+          "name": "Reportar incidencia (Fuga)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Estado inicial Reportada', () => pm.expect(pm.response.json().estado).to.equal('Reportada'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_incidencia\": \"INC-2026-0050\",\n  \"tipo_incidencia\": \"Fuga\",\n  \"descripcion\": \"Se detecta fuga de agua en tubería principal del Sector 1\",\n  \"ubicacion\": \"Frente a casa comunal, Sector 1\",\n  \"nivel_urgencia\": \"Alta\",\n  \"estado\": \"Reportada\",\n  \"id_usuario_reporta\": 1,\n  \"id_sector\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/incidencias", "host": ["{{base_url}}"], "path": ["incidencias"] }
+          }
+        },
+        {
+          "name": "Cambiar estado a En Revisión",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"EnRevisión\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/incidencias/1", "host": ["{{base_url}}"], "path": ["incidencias", "1"] }
+          }
+        },
+        {
+          "name": "Cambiar estado a Resuelta",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"Resuelta\",\n  \"solucion_aplicada\": \"Se reemplazó tramo de tubería dañado de 2 metros\",\n  \"fecha_solucion\": \"2026-05-19T14:00:00.000Z\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/incidencias/1", "host": ["{{base_url}}"], "path": ["incidencias", "1"] }
+          }
+        },
+        {
+          "name": "Obtener incidencia por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/incidencias/1", "host": ["{{base_url}}"], "path": ["incidencias", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔧 Mantenimientos",
+      "item": [
+        {
+          "name": "Listar mantenimientos",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/mantenimientos", "host": ["{{base_url}}"], "path": ["mantenimientos"] }
+          }
+        },
+        {
+          "name": "Registrar mantenimiento preventivo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo_mantenimiento\": \"Preventivo\",\n  \"descripcion\": \"[Tanques] Limpieza y desinfección del tanque principal con cloro al 5%\",\n  \"fecha_realizacion\": \"2026-05-19\",\n  \"costo\": 120.00,\n  \"observaciones\": \"Próximo mantenimiento en 3 meses\",\n  \"id_usuario\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/mantenimientos", "host": ["{{base_url}}"], "path": ["mantenimientos"] }
+          }
+        },
+        {
+          "name": "Registrar mantenimiento correctivo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo_mantenimiento\": \"Correctivo\",\n  \"descripcion\": \"[Válvulas] Reemplazo de válvula de mariposa en entrada del Sector 2\",\n  \"fecha_realizacion\": \"2026-05-15\",\n  \"costo\": 350.00,\n  \"observaciones\": \"Válvula anterior con 5 años de uso\",\n  \"id_incidencia\": 1,\n  \"id_usuario\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/mantenimientos", "host": ["{{base_url}}"], "path": ["mantenimientos"] }
+          }
+        },
+        {
+          "name": "Obtener mantenimiento por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/mantenimientos/1", "host": ["{{base_url}}"], "path": ["mantenimientos", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📢 Anuncios",
+      "item": [
+        {
+          "name": "Listar anuncios activos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Es array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/anuncios", "host": ["{{base_url}}"], "path": ["anuncios"] }
+          }
+        },
+        {
+          "name": "Publicar anuncio urgente",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Suspensión de Servicio — Mantenimiento Programado\",\n  \"contenido\": \"El próximo sábado 23 de mayo se realizará mantenimiento al tanque principal. No habrá servicio de agua de 8:00 a 12:00 PM. Se pide almacenar agua con anticipación.\",\n  \"tipo\": \"Urgente\",\n  \"fecha_vigencia\": \"2026-05-23\",\n  \"id_usuario_publica\": 1,\n  \"enviar_notificacion\": true,\n  \"estado\": \"Activo\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/anuncios", "host": ["{{base_url}}"], "path": ["anuncios"] }
+          }
+        },
+        {
+          "name": "Publicar anuncio informativo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Asamblea General — Mayo 2026\",\n  \"contenido\": \"Se convoca a todos los habitantes a la asamblea general el viernes 30 de mayo a las 3:00 PM en el salón comunal.\",\n  \"tipo\": \"Informativo\",\n  \"fecha_vigencia\": \"2026-05-30\",\n  \"id_usuario_publica\": 1,\n  \"enviar_notificacion\": false,\n  \"estado\": \"Activo\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/anuncios", "host": ["{{base_url}}"], "path": ["anuncios"] }
+          }
+        },
+        {
+          "name": "Obtener anuncio por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/anuncios/1", "host": ["{{base_url}}"], "path": ["anuncios", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔔 Notificaciones",
+      "item": [
+        {
+          "name": "Listar notificaciones",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/notificaciones", "host": ["{{base_url}}"], "path": ["notificaciones"] }
+          }
+        },
+        {
+          "name": "Enviar notificación masiva",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"Alerta\",\n  \"titulo\": \"Nivel de Agua Crítico\",\n  \"mensaje\": \"El nivel del tanque principal ha bajado al 15%. Se recomienda reducir el consumo.\",\n  \"id_usuario_destino\": 1,\n  \"leida\": false\n}"
+            },
+            "url": { "raw": "{{base_url}}/notificaciones", "host": ["{{base_url}}"], "path": ["notificaciones"] }
+          }
+        },
+        {
+          "name": "Marcar notificación como leída",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"leida\": true,\n  \"fecha_lectura\": \"2026-05-19T10:00:00.000Z\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/notificaciones/1", "host": ["{{base_url}}"], "path": ["notificaciones", "1"] }
+          }
+        },
+        {
+          "name": "Obtener notificación por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/notificaciones/1", "host": ["{{base_url}}"], "path": ["notificaciones", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔍 Log de Auditoría",
+      "item": [
+        {
+          "name": "Listar log de auditoría",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Es array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/auditoria", "host": ["{{base_url}}"], "path": ["auditoria"] }
+          }
+        },
+        {
+          "name": "Obtener log por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/auditoria/1", "host": ["{{base_url}}"], "path": ["auditoria", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "⚙️ Parámetros del Sistema",
+      "item": [
+        {
+          "name": "Listar todos los parámetros",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Es array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/parametros", "host": ["{{base_url}}"], "path": ["parametros"] }
+          }
+        },
+        {
+          "name": "Obtener parámetro por ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/parametros/1", "host": ["{{base_url}}"], "path": ["parametros", "1"] }
+          }
+        },
+        {
+          "name": "Actualizar valor de parámetro",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": \"20000\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/parametros/1", "host": ["{{base_url}}"], "path": ["parametros", "1"] }
+          }
+        },
+        {
+          "name": "Crear parámetro nuevo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clave\": \"capacidad_tanque_principal\",\n  \"valor\": \"20000\",\n  \"tipo_dato\": \"Entero\",\n  \"descripcion\": \"Capacidad en litros del tanque principal de almacenamiento\",\n  \"unidad_medida\": \"Litros\",\n  \"categoria\": \"Operativo\",\n  \"activo\": true\n}"
+            },
+            "url": { "raw": "{{base_url}}/parametros", "host": ["{{base_url}}"], "path": ["parametros"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🧪 Flujo Completo (E2E)",
+      "item": [
+        {
+          "name": "E2E-01: Login y registrar nivel",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": ["// Este request requiere token del request '01 - Login'"],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Nivel registrado exitosamente', () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_tanque\": 1,\n  \"nivel_porcentaje\": 75,\n  \"nivel_litros\": 15000,\n  \"id_usuario\": 1,\n  \"estado\": \"Normal\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/niveles", "host": ["{{base_url}}"], "path": ["niveles"] }
+          }
+        },
+        {
+          "name": "E2E-02: Registrar pago + verificar lista",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Pago registrado', () => pm.response.to.have.status(201));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_hogar\": 1,\n  \"monto\": 30.00,\n  \"metodo_pago\": \"Efectivo\",\n  \"periodo_aplicado\": \"2026-05\",\n  \"numero_recibo\": \"PAGO-2026-E2E001\",\n  \"fecha_pago\": \"2026-05-19\",\n  \"id_usuario_registro\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/pagos", "host": ["{{base_url}}"], "path": ["pagos"] }
+          }
+        },
+        {
+          "name": "E2E-03: Reportar incidencia y resolverla",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Incidencia creada', () => pm.response.to.have.status(201));"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_incidencia\": \"INC-E2E-001\",\n  \"tipo_incidencia\": \"Fuga\",\n  \"descripcion\": \"Prueba E2E: fuga de agua en tubería Sector 3\",\n  \"ubicacion\": \"Sector 3, calle principal\",\n  \"nivel_urgencia\": \"Media\",\n  \"estado\": \"Reportada\",\n  \"id_usuario_reporta\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/incidencias", "host": ["{{base_url}}"], "path": ["incidencias"] }
+          }
+        }
+      ]
+    }
+  ]
+}
