@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { SectoresModule } from './sectores/sectores.module';
@@ -26,7 +27,7 @@ import { ParametrosModule } from './parametros/parametros.module';
       username: process.env.DB_USERNAME || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres',
       database: process.env.DB_NAME || 'sistema_agua_san_miguel',
-      autoLoadEntities: true,
+      entities: [join(__dirname, '**', '*.entity{.ts,.js}')],
       synchronize: false,
       logging: process.env.NODE_ENV === 'development',
     }),
