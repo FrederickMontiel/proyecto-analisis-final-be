@@ -41,5 +41,11 @@ export class UsuariosService {
     await this.usuarioRepo.update(id, { estado: EstadoEnum.INACTIVO });
     return { mensaje: 'Usuario desactivado correctamente' };
   }
+
+  async activar(id: number) {
+    await this.findOne(id);
+    await this.usuarioRepo.update(id, { estado: EstadoEnum.ACTIVO });
+    return { mensaje: 'Usuario activado correctamente' };
+  }
 }
 // CRUD usuarios completo con hash bcrypt

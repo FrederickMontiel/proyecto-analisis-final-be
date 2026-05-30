@@ -1,4 +1,4 @@
-﻿import { Injectable, NotFoundException } from '@nestjs/common';
+﻿import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Sector } from '../entities/sector.entity';
@@ -18,10 +18,26 @@ export class SectorService {
     return item;
   }
 
-  create(data: Partial<Sector>) { return this.repo.save(this.repo.create(data)); }
+  async create(data: Partial<Sector>) {
+    try {
+      return await this.repo.save(this.repo.create(data));
+    } catch (error) {
+      if (error.message?.includes('sector_nombre_sector_key')) {
+        throw new ConflictException('No pueden existir dos sectores con el mismo nombre');
+      }
+      throw error;
+    }
+  }
 
   async update(id: number, data: Partial<Sector>) {
-    await this.repo.update(id, data as any);
-    return this.findOne(id);
+    try {
+      await this.repo.update(id, data as any);
+      return this.findOne(id);
+    } catch (error) {
+      if (error.message?.includes('sector_nombre_sector_key')) {
+        throw new ConflictException('No pueden existir dos sectores con el mismo nombre');
+      }
+      throw error;
+    }
   }
 }// Sectores con validacion de hogares asignados

@@ -24,5 +24,8 @@ export class UsuariosController {
 
   @Put(':id/desactivar')
   desactivar(@Param('id') id: string) { return this.service.desactivar(+id); }
+
+  @Put(':id/activar')
+  activar(@Param('id') id: string) { return this.service.activar(+id); }
 }
 // Pruebas sprint 2: pagos, gastos, estado cuenta - correcciones aplicadas

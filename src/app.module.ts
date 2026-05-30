@@ -16,6 +16,7 @@ import { AnunciosModule } from './anuncios/anuncios.module';
 import { NotificacionesModule } from './notificaciones/notificaciones.module';
 import { AuditoriaModule } from './auditoria/auditoria.module';
 import { ParametrosModule } from './parametros/parametros.module';
+import { MorososModule } from './morosos/morosos.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { ParametrosModule } from './parametros/parametros.module';
     NotificacionesModule,
     AuditoriaModule,
     ParametrosModule,
+    MorososModule,
   ],
 })
 export class AppModule {}

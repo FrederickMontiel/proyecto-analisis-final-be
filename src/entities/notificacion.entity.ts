@@ -8,6 +8,11 @@ export enum TipoNotificacionEnum {
   SISTEMA = 'Sistema',
 }
 
+export enum SiNoEnum {
+  SI = 'Si',
+  NO = 'No',
+}
+
 @Entity('notificacion')
 export class Notificacion {
   @PrimaryGeneratedColumn()
@@ -32,8 +37,8 @@ export class Notificacion {
   @CreateDateColumn()
   fecha_envio: Date;
 
-  @Column({ default: false })
-  leida: boolean;
+  @Column({ type: 'enum', enum: SiNoEnum, default: SiNoEnum.NO })
+  leida: SiNoEnum;
 
   @Column({ type: 'timestamp', nullable: true })
   fecha_lectura: Date;

@@ -12,6 +12,11 @@ export enum EstadoAnuncioEnum {
   ARCHIVADO = 'Archivado',
 }
 
+export enum SiNoEnum {
+  SI = 'Si',
+  NO = 'No',
+}
+
 @Entity('anuncio')
 export class Anuncio {
   @PrimaryGeneratedColumn()
@@ -39,8 +44,8 @@ export class Anuncio {
   @Column()
   id_usuario_publica: number;
 
-  @Column({ default: false })
-  enviar_notificacion: boolean;
+  @Column({ type: 'enum', enum: SiNoEnum, default: SiNoEnum.NO })
+  enviar_notificacion: SiNoEnum;
 
   @Column({ type: 'enum', enum: EstadoAnuncioEnum, default: EstadoAnuncioEnum.ACTIVO })
   estado: EstadoAnuncioEnum;
