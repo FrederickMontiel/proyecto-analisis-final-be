@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
@@ -17,10 +18,15 @@ import { NotificacionesModule } from './notificaciones/notificaciones.module';
 import { AuditoriaModule } from './auditoria/auditoria.module';
 import { ParametrosModule } from './parametros/parametros.module';
 import { MorososModule } from './morosos/morosos.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST || 'localhost',
@@ -47,6 +53,7 @@ import { MorososModule } from './morosos/morosos.module';
     AuditoriaModule,
     ParametrosModule,
     MorososModule,
+    UploadModule,
   ],
 })
 export class AppModule {}
