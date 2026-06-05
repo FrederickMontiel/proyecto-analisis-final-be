@@ -32,4 +32,7 @@ export class DetalleDistribucion {
 
   @Column({ type: 'text', nullable: true })
   observaciones: string;
+
+  @Column({ type: 'text', nullable: true })
+  descripcion: string;
 }

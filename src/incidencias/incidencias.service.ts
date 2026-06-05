@@ -15,7 +15,7 @@ export class IncidenciaService {
 
   findAll() {
     return this.repo.find({
-      relations: ['usuario_reporta', 'sector'],
+      relations: ['usuarioReporta', 'sector'],
       order: { fecha_reporte: 'DESC' },
     });
   }
@@ -23,7 +23,7 @@ export class IncidenciaService {
   async findOne(id: number) {
     const item = await this.repo.findOne({
       where: { id_incidencia: id } as any,
-      relations: ['usuario_reporta', 'sector'],
+      relations: ['usuarioReporta', 'sector'],
     });
     if (!item) throw new NotFoundException('Incidencia no encontrada');
     return item;

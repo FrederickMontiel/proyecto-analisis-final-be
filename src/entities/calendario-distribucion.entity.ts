@@ -33,6 +33,9 @@ export class CalendarioDistribucion {
   @Column({ type: 'enum', enum: EstadoEnum, default: EstadoEnum.ACTIVO })
   estado: EstadoEnum;
 
+  @Column({ type: 'text', nullable: true })
+  descripcion: string;
+
   @ManyToOne(() => Usuario)
   @JoinColumn({ name: 'id_usuario_creador' })
   usuario_creador: Usuario;
