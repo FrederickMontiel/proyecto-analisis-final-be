@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { NivelesService } from './niveles.service';
+import { RegistroNivelService } from './niveles.service';
 import { RegistroNivel } from '../entities/registro-nivel.entity';
 
-describe('NivelesService', () => {
-  let service: NivelesService;
+describe('RegistroNivelService', () => {
+  let service: RegistroNivelService;
   let mockRepository: any;
 
   beforeEach(async () => {
@@ -31,7 +31,7 @@ describe('NivelesService', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        NivelesService,
+        RegistroNivelService,
         {
           provide: getRepositoryToken(RegistroNivel),
           useValue: mockRepository,
@@ -39,7 +39,7 @@ describe('NivelesService', () => {
       ],
     }).compile();
 
-    service = module.get<NivelesService>(NivelesService);
+    service = module.get<RegistroNivelService>(RegistroNivelService);
   });
 
   describe('getNiveles', () => {

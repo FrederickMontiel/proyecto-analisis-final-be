@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { PagosService } from './pagos.service';
+import { PagoService } from './pagos.service';
 import { Pago } from '../entities/pago.entity';
+import { Usuario } from '../entities/usuario.entity';
 
-describe('PagosService', () => {
-  let service: PagosService;
+describe('PagoService', () => {
+  let service: PagoService;
   let mockRepository: any;
 
   beforeEach(async () => {
@@ -34,15 +35,25 @@ describe('PagosService', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        PagosService,
+        PagoService,
         {
           provide: getRepositoryToken(Pago),
-          useValue: mockRepository,
+          useValue: {
+            find: jest.fn(),
+            save: jest.fn(),
+            findOne: jest.fn(),
+          },
+        },
+        {
+          provide: getRepositoryToken(Usuario),
+          useValue: {
+            findOne: jest.fn(),
+          },
         },
       ],
     }).compile();
 
-    service = module.get<PagosService>(PagosService);
+    service = module.get<PagoService>(PagoService);
   });
 
   describe('getPagos', () => {
