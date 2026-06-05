@@ -74,7 +74,7 @@ describe('PagoService', () => {
         id_usuario_registro: 3,
       };
 
-      const result = await service.crear(data);
+      const result = await service.create(data);
       expect(result).toBeDefined();
       expect(mockRepository.save).toHaveBeenCalled();
     });
@@ -88,7 +88,7 @@ describe('PagoService', () => {
         id_usuario_registro: 3,
       };
 
-      await expect(service.crear(invalidData)).rejects.toThrow();
+      await expect(service.create(invalidData)).rejects.toThrow();
     });
 
     it('should generate receipt number', async () => {
@@ -100,7 +100,7 @@ describe('PagoService', () => {
         id_usuario_registro: 3,
       };
 
-      const result = await service.crear(data);
+      const result = await service.create(data);
       expect(result.numero_recibo).toBeDefined();
     });
   });

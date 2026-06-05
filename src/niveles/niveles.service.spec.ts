@@ -60,7 +60,7 @@ describe('RegistroNivelService', () => {
         observaciones: 'Test',
       };
 
-      const result = await service.crear(data);
+      const result = await service.create(data);
       expect(result).toBeDefined();
       expect(mockRepository.save).toHaveBeenCalled();
     });
@@ -73,7 +73,7 @@ describe('RegistroNivelService', () => {
         id_usuario: 4,
       };
 
-      await expect(service.crear(invalidData)).rejects.toThrow();
+      await expect(service.create(invalidData)).rejects.toThrow();
     });
   });
 });
