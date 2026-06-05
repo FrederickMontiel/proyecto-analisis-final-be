@@ -6,6 +6,7 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { SectoresModule } from './sectores/sectores.module';
+import { HogaresModule } from './hogares/hogares.module';
 import { TanquesModule } from './tanques/tanques.module';
 import { NivelesModule } from './niveles/niveles.module';
 import { LecturasModule } from './lecturas/lecturas.module';
@@ -44,6 +45,7 @@ import { ReportesModule } from './reportes/reportes.module';
     AuthModule,
     UsuariosModule,
     SectoresModule,
+    HogaresModule,
     TanquesModule,
     NivelesModule,
     LecturasModule,
