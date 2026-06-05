@@ -20,6 +20,7 @@ import { ParametrosModule } from './parametros/parametros.module';
 import { MorososModule } from './morosos/morosos.module';
 import { UploadModule } from './upload/upload.module';
 import { ProveedoresModule } from './proveedores/proveedores.module';
+import { DistribucionModule } from './distribucion/distribucion.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { ProveedoresModule } from './proveedores/proveedores.module';
     MorososModule,
     UploadModule,
     ProveedoresModule,
+    DistribucionModule,
   ],
 })
 export class AppModule {}

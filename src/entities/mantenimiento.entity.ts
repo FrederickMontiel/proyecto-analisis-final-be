@@ -54,4 +54,7 @@ export class Mantenimiento {
 
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   duracion_horas: number;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  foto_url: string;
 }
