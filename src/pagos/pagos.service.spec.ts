@@ -69,7 +69,7 @@ describe('PagoService', () => {
       const data = {
         id_hogar: 1,
         monto: 50,
-        metodo_pago: 'Efectivo',
+        metodo_pago: 'Efectivo' as any,
         periodo_aplicado: 'Mayo 2026',
         id_usuario_registro: 3,
       };
