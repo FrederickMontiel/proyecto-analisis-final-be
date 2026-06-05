@@ -1,7 +1,7 @@
 ﻿import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Mantenimiento } from '../entities/mantenimiento.entity';
+import { Repository, Between, MoreThanOrEqual, LessThanOrEqual } from 'typeorm';
+import { Mantenimiento, TipoMantenimientoEnum } from '../entities/mantenimiento.entity';
 
 @Injectable()
 export class MantenimientoService {
@@ -37,9 +37,10 @@ export class MantenimientoService {
     const hoy = new Date();
     const en7dias = new Date(hoy.getTime() + 7 * 24 * 60 * 60 * 1000);
     return this.repo.find({
-      where: [
-        { tipo_mantenimiento: 'Preventivo', fecha_realizacion: { $between: [hoy, en7dias] } },
-      ],
+      where: {
+        tipo_mantenimiento: TipoMantenimientoEnum.PREVENTIVO,
+        fecha_realizacion: Between(hoy, en7dias),
+      },
       relations: ['usuario', 'proveedor'],
       order: { fecha_realizacion: 'ASC' },
     });

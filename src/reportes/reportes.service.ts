@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Between, MoreThanOrEqual, LessThanOrEqual } from 'typeorm';
 import * as PDFDocument from 'pdfkit';
 import { Pago } from '../entities/pago.entity';
 import { Gasto } from '../entities/gasto.entity';
@@ -27,14 +27,14 @@ export class ReportesService {
     doc.moveDown();
 
     const pagos = await this.pagoRepo.find({
-      where: [
-        { fecha_pago: { $gte: new Date(fechaInicio), $lte: new Date(fechaFin) } },
-      ],
+      where: {
+        fecha_pago: Between(new Date(fechaInicio), new Date(fechaFin)),
+      },
     });
     const gastos = await this.gastoRepo.find({
-      where: [
-        { fecha_gasto: { $gte: fechaInicio, $lte: fechaFin } },
-      ],
+      where: {
+        fecha_gasto: Between(new Date(fechaInicio), new Date(fechaFin)),
+      },
     });
 
     const totalIngresos = pagos.reduce((sum, p) => sum + parseFloat(p.monto.toString()), 0);
@@ -77,9 +77,9 @@ export class ReportesService {
 
     const lecturas = await this.lecturaRepo.find({
       relations: ['hogar'],
-      where: [
-        { fecha_lectura: { $gte: new Date(`${mes}-01`), $lt: new Date(`${mes}-31`) } },
-      ],
+      where: {
+        fecha_lectura: Between(new Date(`${mes}-01`), new Date(`${mes}-32`)),
+      },
     });
 
     const consumosPorHogar = {};
