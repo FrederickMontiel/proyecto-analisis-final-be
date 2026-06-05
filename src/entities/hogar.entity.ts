@@ -23,11 +23,11 @@ export class Hogar {
   @Column({ default: 1 })
   numero_habitantes: number;
 
-  @ManyToOne(() => Sector)
+  @ManyToOne(() => Sector, { nullable: true })
   @JoinColumn({ name: 'id_sector' })
   sector: Sector;
 
-  @Column()
+  @Column({ nullable: true })
   id_sector: number;
 
   @ManyToOne(() => Usuario, { nullable: true })

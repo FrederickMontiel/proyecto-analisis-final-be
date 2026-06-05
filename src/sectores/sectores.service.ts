@@ -60,7 +60,12 @@ export class SectorService {
 
   async asignarHogares(idSector: number, idsHogares: number[]) {
     await this.findOne(idSector);
-    await this.hogarRepo.update({ id_sector: idSector }, { id_sector: null });
+    const hogaresActuales = await this.hogarRepo.find({ where: { id_sector: idSector } });
+    const idActuales = hogaresActuales.map(h => h.id_hogar);
+    const paraDesasignar = idActuales.filter(id => !idsHogares.includes(id));
+    if (paraDesasignar.length > 0) {
+      await this.hogarRepo.update(paraDesasignar, { id_sector: null });
+    }
     for (const idHogar of idsHogares) {
       await this.hogarRepo.update(idHogar, { id_sector: idSector });
     }
