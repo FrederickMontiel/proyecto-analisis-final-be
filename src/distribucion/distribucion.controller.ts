@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { DistribucionService } from './distribucion.service';
@@ -15,8 +15,8 @@ export class DistribucionController {
   @Post('calendarios')
   @UseGuards(RolesGuard)
   @Roles('Presidente')
-  crearCalendario(@Body() data: any) {
-    return this.service.crearCalendario(data);
+  crearCalendario(@Request() req: any, @Body() data: any) {
+    return this.service.crearCalendario(data, req.user.id_usuario);
   }
 
   @Get('calendarios')

@@ -13,8 +13,12 @@ export class DistribucionService {
     private detalleRepo: Repository<DetalleDistribucion>,
   ) {}
 
-  async crearCalendario(data: Partial<CalendarioDistribucion>) {
-    return this.calendarioRepo.save(this.calendarioRepo.create(data));
+  async crearCalendario(data: Partial<CalendarioDistribucion>, idUsuario: number) {
+    const calendario = this.calendarioRepo.create({
+      ...data,
+      id_usuario_creador: idUsuario,
+    });
+    return this.calendarioRepo.save(calendario);
   }
 
   async obtenerCalendarios() {
