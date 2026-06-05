@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Usuario } from './usuario.entity';
 import { Incidencia } from './incidencia.entity';
+import { Proveedor } from './proveedor.entity';
 
 export enum TipoMantenimientoEnum {
   PREVENTIVO = 'Preventivo',
@@ -40,5 +41,17 @@ export class Mantenimiento {
 
   @Column({ type: 'text', nullable: true })
   observaciones: string;
+
+  @ManyToOne(() => Proveedor, { nullable: true })
+  @JoinColumn({ name: 'id_proveedor' })
+  proveedor: Proveedor;
+
+  @Column({ nullable: true })
+  id_proveedor: number;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  componente: string; // Tanque, Bomba, Tubería, Válvula, Contador, Otro
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  duracion_horas: number;
 }
-// Correccion calculo consumo per capita y comparacion historica

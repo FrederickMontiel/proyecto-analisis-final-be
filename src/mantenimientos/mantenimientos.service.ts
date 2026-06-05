@@ -10,10 +10,18 @@ export class MantenimientoService {
     private repo: Repository<Mantenimiento>,
   ) {}
 
-  findAll() { return this.repo.find(); }
+  findAll() {
+    return this.repo.find({
+      relations: ['usuario', 'incidencia', 'proveedor'],
+      order: { fecha_realizacion: 'DESC' },
+    });
+  }
 
   async findOne(id: number) {
-    const item = await this.repo.findOne({ where: { id_mantenimiento: id } as any });
+    const item = await this.repo.findOne({
+      where: { id_mantenimiento: id } as any,
+      relations: ['usuario', 'incidencia', 'proveedor'],
+    });
     if (!item) throw new NotFoundException('Registro no encontrado');
     return item;
   }
