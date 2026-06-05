@@ -2,10 +2,36 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMan
 import { Usuario } from './usuario.entity';
 import { DetalleDistribucion } from './detalle-distribucion.entity';
 
+enum TipoCalendarioEnum {
+  SEMANAL = 'Semanal',
+  QUINCENAL = 'Quincenal',
+  MENSUAL = 'Mensual',
+}
+
+enum EstadoEnum {
+  ACTIVO = 'Activo',
+  INACTIVO = 'Inactivo',
+}
+
 @Entity('calendario_distribucion')
 export class CalendarioDistribucion {
   @PrimaryGeneratedColumn()
   id_calendario: number;
+
+  @Column({ type: 'varchar', length: 100 })
+  nombre_calendario: string;
+
+  @Column({ type: 'date' })
+  fecha_inicio_vigencia: string;
+
+  @Column({ type: 'date', nullable: true })
+  fecha_fin_vigencia: string;
+
+  @Column({ type: 'enum', enum: TipoCalendarioEnum, default: TipoCalendarioEnum.SEMANAL })
+  tipo: TipoCalendarioEnum;
+
+  @Column({ type: 'enum', enum: EstadoEnum, default: EstadoEnum.ACTIVO })
+  estado: EstadoEnum;
 
   @ManyToOne(() => Usuario)
   @JoinColumn({ name: 'id_usuario_creador' })
@@ -14,17 +40,8 @@ export class CalendarioDistribucion {
   @Column()
   id_usuario_creador: number;
 
-  @Column({ type: 'text', nullable: true })
-  nombre: string;
-
-  @Column({ type: 'text', nullable: true })
-  descripcion: string;
-
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   fecha_creacion: Date;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  fecha_actualizacion: Date;
 
   @OneToMany(() => DetalleDistribucion, (detalle) => detalle.calendario)
   detalles: DetalleDistribucion[];

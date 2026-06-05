@@ -21,8 +21,8 @@ export class DetalleDistribucion {
   @Column()
   id_sector: number;
 
-  @Column({ type: 'int' })
-  dia_semana: number; // 0=Domingo, 1=Lunes, ..., 6=Sábado
+  @Column({ type: 'smallint' })
+  dia_semana: number; // 1-7 (Lunes a Domingo)
 
   @Column({ type: 'time' })
   hora_inicio: string; // HH:MM:SS
@@ -31,11 +31,5 @@ export class DetalleDistribucion {
   hora_fin: string; // HH:MM:SS
 
   @Column({ type: 'text', nullable: true })
-  descripcion: string;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  fecha_creacion: Date;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  fecha_actualizacion: Date;
+  observaciones: string;
 }

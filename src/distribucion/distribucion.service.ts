@@ -48,9 +48,11 @@ export class DistribucionService {
     if (!calendario) throw new NotFoundException('Calendario no encontrado');
 
     if (!data.id_sector) throw new BadRequestException('id_sector requerido');
-    if (!data.dia_semana && data.dia_semana !== 0) throw new BadRequestException('dia_semana requerido');
+    if (!data.dia_semana && data.dia_semana !== 0) throw new BadRequestException('dia_semana requerido (1-7)');
     if (!data.hora_inicio) throw new BadRequestException('hora_inicio requerida');
     if (!data.hora_fin) throw new BadRequestException('hora_fin requerida');
+
+    if (data.dia_semana < 1 || data.dia_semana > 7) throw new BadRequestException('dia_semana debe estar entre 1 y 7');
 
     return this.detalleRepo.save(this.detalleRepo.create({ ...data, id_calendario: idCalendario }));
   }
