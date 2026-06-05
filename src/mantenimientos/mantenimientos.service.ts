@@ -32,4 +32,16 @@ export class MantenimientoService {
     await this.repo.update(id, data as any);
     return this.findOne(id);
   }
-}// Mantenimientos: preventivos y correctivos, vinculados a incidencias
+
+  async obtenerProximos() {
+    const hoy = new Date();
+    const en7dias = new Date(hoy.getTime() + 7 * 24 * 60 * 60 * 1000);
+    return this.repo.find({
+      where: [
+        { tipo_mantenimiento: 'Preventivo', fecha_realizacion: { $between: [hoy, en7dias] } },
+      ],
+      relations: ['usuario', 'proveedor'],
+      order: { fecha_realizacion: 'ASC' },
+    });
+  }
+}

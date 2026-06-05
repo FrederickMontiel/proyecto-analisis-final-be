@@ -11,7 +11,8 @@ export class MantenimientoController {
   constructor(private service: MantenimientoService) {}
 
   @Get() findAll() { return this.service.findAll(); }
+  @Get('alertas/proximos') obtenerProximos() { return this.service.obtenerProximos(); }
   @Get(':id') findOne(@Param('id') id: string) { return this.service.findOne(+id); }
   @Post() create(@Body() data: any) { return this.service.create(data); }
   @Put(':id') update(@Param('id') id: string, @Body() data: any) { return this.service.update(+id, data); }
-}// Pruebas sprint 3: analisis, incidencias, reportes - todos pasan
+}
