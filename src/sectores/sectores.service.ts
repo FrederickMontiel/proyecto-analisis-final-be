@@ -13,7 +13,15 @@ export class SectorService {
     private hogarRepo: Repository<Hogar>,
   ) {}
 
-  findAll() { return this.repo.find(); }
+  async findAll() {
+    const sectores = await this.repo.find();
+    const result = [];
+    for (const sector of sectores) {
+      const hogares = await this.hogarRepo.count({ where: { id_sector: sector.id_sector } });
+      result.push({ ...sector, numero_hogares: hogares });
+    }
+    return result;
+  }
 
   async findOne(id: number) {
     const item = await this.repo.findOne({ where: { id_sector: id } as any });
@@ -50,7 +58,10 @@ export class SectorService {
     const todoHogares = await this.hogarRepo.find();
 
     return {
-      sector,
+      sector: {
+        ...sector,
+        numero_hogares: hogaresAsignados.length,
+      },
       hogares: todoHogares.map(h => ({
         ...h,
         asignado: hogaresAsignados.some(ha => ha.id_hogar === h.id_hogar),
