@@ -21,6 +21,7 @@ import { MorososModule } from './morosos/morosos.module';
 import { UploadModule } from './upload/upload.module';
 import { ProveedoresModule } from './proveedores/proveedores.module';
 import { DistribucionModule } from './distribucion/distribucion.module';
+import { ReportesModule } from './reportes/reportes.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { DistribucionModule } from './distribucion/distribucion.module';
     UploadModule,
     ProveedoresModule,
     DistribucionModule,
+    ReportesModule,
   ],
 })
 export class AppModule {}
