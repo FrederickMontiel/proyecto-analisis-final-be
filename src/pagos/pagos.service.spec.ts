@@ -83,12 +83,12 @@ describe('PagoService', () => {
       const invalidData = {
         id_hogar: 1,
         monto: 0,
-        metodo_pago: 'Efectivo',
+        metodo_pago: 'Efectivo' as any,
         periodo_aplicado: 'Mayo 2026',
         id_usuario_registro: 3,
       };
 
-      await expect(service.create(invalidData)).rejects.toThrow();
+      await expect(service.create(invalidData as any)).rejects.toThrow();
     });
 
     it('should generate receipt number', async () => {
